@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:spring="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_Configuration" host="0.0.0.0" port="8081" doc:name="HTTP Listener Configuration"/>
+	<flow name="dyn_variable_assignment_conditionsxpathFlow">
+		<http:listener config-ref="HTTP_Listener_Configuration" path="/greet4" doc:name="HTTP"/>
+		<expression-transformer expression="flowvars.username = xpath3('/user/username').text" doc:name="Expression"/>
+		<set-payload value="#[xpath3('/user/username').text], 
+#[xpath3('/user/age').text],
+#[xpath3('/user/age').text &gt;18]" doc:name="Set Payload"/>
+		<file:outbound-endpoint path="/Users/nziemaraangnzienguiboussougou/Desktop/MUFundamentals3.9_studentFiles_13apr2020/dat_File/data xpath" responseTimeout="10000" doc:name="File"/>
+		<set-payload value="Hello #[flowVars.username]" doc:name="Set Payload"/>
+	</flow>
+</mule>
